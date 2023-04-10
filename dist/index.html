@@ -5,17 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-do List</title>
 </head>
+
 <body>
     <h1>To-do List</h1>
     <script src="main.js" defer></script>
-    <div class="tester">
+    <h2>Projects</h2>
+    <div class="projDisplay">
+        
+        <!--<div class="project">Example Project</div>-->
+    </div>
+    <button id="newProjBtn">New Project</button>
+    <div id="newProjModal">
         <form action="">
-            <label for="newProjName">New Project Name</label>
-            <input type="text" id="newProjName">
-            <label for="newTaskName">New Task Name</label>
-            <input type="text" id="newTaskName">
-            <button id="submitTest" type="submit" onclick="event.preventDefault()">Submit</button>
+            <label for="newProjName">New Project Name:</label>
+            <input type="text" name="newProjName" id="newProjName" required>
+            <button type="submit" onclick="event.preventDefault()" id="newProjSubmitBtn">Create</button>
         </form>
     </div>
+    <h2 id="tasksDisplayHeader">Select a project to view tasks</h2>
+    <button id="addTaskBtn">Add Task</button>
+   <div id="taskDisplay">
+        <div class="task">Example Task</div>
+   </div>
 </body>
 </html>

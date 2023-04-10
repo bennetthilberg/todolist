@@ -1,0 +1,81 @@
+html{
+    font-family: "Helvetica", "sans-serif";
+}
+.projDisplay{
+    width: 90%;
+    border: 2px solid black;
+    padding: 6px;
+    margin: 4px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.projDisplay>*{
+    margin: 6px;
+}
+h2{
+    margin-bottom: 1px;
+}
+#newProjModal{
+    display: none;
+    position: fixed;
+    height: 5rem;
+    width: 10rem;
+    border: 2px solid black;
+    z-index: 1;
+    padding: 6px;
+    background-color: white;
+}
+.project{
+    display: inline-block;
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
+    background-color: navy;
+    border: 3px solid navy;
+    border-radius: 8px;
+    padding: 6px;
+    cursor: pointer;
+    text-align: center;
+}
+.project:hover{
+    background-color: rgb(73, 73, 158);
+    border-color: rgb(73, 73, 158);
+}
+button{
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+    border-radius: 4px;
+    margin: 4px;
+    font-family: "Helvetica", "sans-serif";
+    font-weight: 600;
+    padding: 5px;
+}
+button:hover{
+    background-color: rgb(64, 62, 69);
+    border-color: rgb(64, 62, 69);
+}
+#newProjBtn{
+    font-size: 20px;
+}
+#taskDisplay{
+    margin: 4px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2px;
+    
+}
+.task{
+    background-color: navy;
+    color: white;
+    padding: 6px;
+    text-align: center;
+    border-color: navy;
+    border-radius: 8px;
+}
+#addTaskBtn{
+    opacity: 0.5;
+    cursor: not-allowed;
+    font-size: 18px;
+}

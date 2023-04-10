@@ -27,7 +27,7 @@ class Project {
       return task;
     }
   }
-  
+
   class Task {
     constructor(title, desc, deadline, priority, parent) {
       this.title = title;
@@ -47,19 +47,49 @@ class Project {
     return newProj;
   }
   
-  /*
+let newProjBtn = document.querySelector('#newProjBtn');
+newProjBtn.addEventListener('click', () => toggleShowNewProjModal());
 
-  DOM test project maker
+let newProjModal = document.querySelector('#newProjModal');
 
-  */
+function toggleShowNewProjModal(){
+  if(newProjModal.style.display == ''){
+    newProjModal.style.display = 'block';
+  }
+  else{
+    newProjModal.style.display = '';
+  }
+}
 
-let testerSubmitBtn = document.getElementById('submitTest');
-testerSubmitBtn.addEventListener('click', ()=>testerSubmit())
-const testerSubmit = () => {
-    if(document.getElementById('newProjName').value){
-        addProj(document.getElementById('newProjName').value);
-    }
-    if(document.getElementById('newTaskName').value){
-        addProj(document.getElementById('newProjName').value);
-    }
-};
+let newProjSubmitBtn = document.querySelector('#newProjSubmitBtn');
+newProjSubmitBtn.addEventListener('click', () => submitNewProj(document.querySelector('#newProjName').value));
+function submitNewProj(newProjName){
+  projects.push(new Project(newProjName));
+  toggleShowNewProjModal();
+  addNewProjDOM(newProjName);
+}
+let projDisplay = document.querySelector('.projDisplay');
+function addNewProjDOM(newProjName){
+  let newProj = document.createElement('div');
+  newProj.classList.add('project');
+  newProj.textContent = newProjName;
+  projDisplay.appendChild(newProj);
+  newProj.addEventListener('click', () => setActiveProj(newProjName));
+}
+
+let activeProj;
+let addTaskBtn = document.querySelector('#addTaskBtn');
+let tasksDisplayHeader = document.querySelector('#tasksDisplayHeader');
+function setActiveProj(projBecomingActiveName){
+  activeProj = projects.find(project => project.name = projBecomingActiveName);
+  tasksDisplayHeader.textContent = `Tasks for ${activeProj.name}`;
+  for(const task of activeProj.tasks){
+
+  }
+  addTaskBtn.style.opacity = 1;
+  addTaskBtn.style.cursor = 'pointer';
+  console.log(activeProj);
+}
+
+
+
