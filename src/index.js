@@ -80,6 +80,7 @@ function addNewProjDOM(newProjName){
 let activeProj;
 let addTaskBtn = document.querySelector('#addTaskBtn');
 let tasksDisplayHeader = document.querySelector('#tasksDisplayHeader');
+let newTaskModal = document.querySelector('#newTaskModal');
 function setActiveProj(projBecomingActiveName){
   activeProj = projects.find(project => project.name = projBecomingActiveName);
   tasksDisplayHeader.textContent = `Tasks for ${activeProj.name}`;
@@ -88,8 +89,37 @@ function setActiveProj(projBecomingActiveName){
   }
   addTaskBtn.style.opacity = 1;
   addTaskBtn.style.cursor = 'pointer';
-  console.log(activeProj);
+  addTaskBtn.addEventListener('click', () => {
+    if(newTaskModal.style.display == ''){
+      newTaskModal.style.display = 'block';
+    }
+    else{
+      newTaskModal.style.display = '';
+    }
+  });
+  console.log(`Active project: ${activeProj.name}`);
+  // Below for loop isn't removing old tasks
+  for(const oldTask of Array.from(document.querySelector('.task'))){
+    taskDisplay.removeChild(oldTask);
+  }
 }
 
+let newTaskSubmitBtn =  document.querySelector('#newTaskSubmitBtn');
+let taskDisplay = document.querySelector('#taskDisplay');
+newTaskSubmitBtn.addEventListener('click', () => {
+  activeProj.addTask(
+    document.querySelector('#newTaskName').value,
+    document.querySelector('#newTaskDesc').value,
+    document.querySelector('#newTaskDeadline').value,
+    document.querySelector('#newTaskPriority').value
+  );
+  newTaskModal.style.display = '';
+  for(const task of activeProj.tasks){
+    let newTask = document.createElement('div');
+    newTask.textContent = task.title;
+    newTask.classList.add('task');
+    taskDisplay.appendChild(newTask);
+  }
+});
 
 

@@ -79,3 +79,17 @@ button:hover{
     cursor: not-allowed;
     font-size: 18px;
 }
+#newTaskModal{
+    display: none;
+    position: fixed;
+    height: 14rem;
+    width: 10rem;
+    border: 2px solid black;
+    z-index: 1;
+    padding: 6px;
+    background-color: white;
+    margin: 4px;
+}
+#newTaskModal>form>*{
+    margin: 5px;
+}

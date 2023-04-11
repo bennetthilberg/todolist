@@ -24,6 +24,23 @@
     </div>
     <h2 id="tasksDisplayHeader">Select a project to view tasks</h2>
     <button id="addTaskBtn">Add Task</button>
+    <div id="newTaskModal">
+        <form action="">
+            <label for="newTaskName">Name:</label>
+            <input type="text" name="newTaskName" id="newTaskName">
+            <label for="newTaskDesc">Description:</label>
+            <input type="text" name="newTaskDesc" id="newTaskDesc">
+            <label for="newTaskDeadline">Deadline:</label>
+            <input type="date" name="newTaskDeadline" id="newTaskDeadline">
+            <label for="newTaskPriority">Priority:</label>
+            <select name="newTaskPriority" id="newTaskPriority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <button id="newTaskSubmitBtn" onclick="event.preventDefault()">Create</button>
+        </form>
+    </div>
    <div id="taskDisplay">
         <div class="task">Example Task</div>
    </div>
