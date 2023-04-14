@@ -82,28 +82,35 @@ let addTaskBtn = document.querySelector('#addTaskBtn');
 let tasksDisplayHeader = document.querySelector('#tasksDisplayHeader');
 let newTaskModal = document.querySelector('#newTaskModal');
 function setActiveProj(projBecomingActiveName){
-  activeProj = projects.find(project => project.name = projBecomingActiveName);
+  activeProj = projects.find(project => project.name === projBecomingActiveName);
   tasksDisplayHeader.textContent = `Tasks for ${activeProj.name}`;
-  for(const task of activeProj.tasks){
-
-  }
   addTaskBtn.style.opacity = 1;
   addTaskBtn.style.cursor = 'pointer';
-  addTaskBtn.addEventListener('click', () => {
-    if(newTaskModal.style.display == ''){
-      newTaskModal.style.display = 'block';
-    }
-    else{
-      newTaskModal.style.display = '';
-    }
-  });
+  
   console.log(`Active project: ${activeProj.name}`);
-  // Below for loop isn't removing old tasks
-  for(const oldTask of Array.from(document.querySelectorAll('.task'))){
+  for(const oldTask of Array.from(taskDisplay.querySelectorAll('.task'))){
     console.log(oldTask);
     taskDisplay.removeChild(oldTask);
   }
+  for(const newlyActiveTask of activeProj.tasks){
+    let newTask = document.createElement('div');
+    newTask.innerHTML = `<span class="taskTitle">${newlyActiveTask.title}</span><br>
+    ${newlyActiveTask.desc}<br>
+    Due: ${newlyActiveTask.deadline}<br>
+    Priority: ${newlyActiveTask.priority}`;
+    newTask.classList.add('task');
+    //makeDelEL(newTask);
+    taskDisplay.appendChild(newTask);
+  }
 }
+addTaskBtn.addEventListener('click', () => {
+  if(newTaskModal.style.display == ''){
+    newTaskModal.style.display = 'block';
+  }
+  else{
+    newTaskModal.style.display = '';
+  }
+});
 
 let newTaskSubmitBtn =  document.querySelector('#newTaskSubmitBtn');
 let taskDisplay = document.querySelector('#taskDisplay');
@@ -115,12 +122,22 @@ newTaskSubmitBtn.addEventListener('click', () => {
     document.querySelector('#newTaskPriority').value
   );
   newTaskModal.style.display = '';
-  for(const task of activeProj.tasks){
+  //
+  let newTask = document.createElement('div');
+    //newTask.textContent = document.querySelector('#newTaskName').value;
+    newTask.innerHTML = `<span class="taskTitle">${document.querySelector('#newTaskName').value}</span><br>
+    ${document.querySelector('#newTaskDesc').value}<br>
+    Due: ${document.querySelector('#newTaskDeadline').value}<br>
+    Priority: ${document.querySelector('#newTaskPriority').value}`;
+    newTask.classList.add('task');
+    //makeDelEL(newTask);
+    taskDisplay.appendChild(newTask);
+    //
+  /*for(const task of activeProj.tasks){
     let newTask = document.createElement('div');
     newTask.textContent = task.title;
     newTask.classList.add('task');
     taskDisplay.appendChild(newTask);
-  }
+  }*/
 });
-
 
