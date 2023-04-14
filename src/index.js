@@ -99,7 +99,8 @@ function setActiveProj(projBecomingActiveName){
   });
   console.log(`Active project: ${activeProj.name}`);
   // Below for loop isn't removing old tasks
-  for(const oldTask of Array.from(document.querySelector('.task'))){
+  for(const oldTask of Array.from(document.querySelectorAll('.task'))){
+    console.log(oldTask);
     taskDisplay.removeChild(oldTask);
   }
 }
