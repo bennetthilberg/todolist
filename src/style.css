@@ -36,10 +36,12 @@ h2{
     padding: 6px;
     cursor: pointer;
     text-align: center;
+    transition: scale 0.3s;
 }
 .project:hover{
     background-color: rgb(73, 73, 158);
     border-color: rgb(73, 73, 158);
+    scale: 1.1;
 }
 button{
     cursor: pointer;
@@ -73,6 +75,7 @@ button:hover{
     text-align: center;
     border-color: navy;
     border-radius: 8px;
+    transition: scale 0.5s;
 }
 #addTaskBtn{
     opacity: 0.5;
@@ -96,8 +99,18 @@ button:hover{
 .taskTitle{
     font-weight: 800;
 }
-.task:hover{
-    background-color: red;
+.taskTrigger .task:hover{
+    background-color: rgb(255, 55, 15);
     opacity: 0.5;
     cursor: pointer;
+    scale: 0.9;
+}
+.task>p{
+    margin: 4px;
+}
+button{
+    transition: scale 0.3s;
+}
+button:hover{
+    scale: 1.1;
 }

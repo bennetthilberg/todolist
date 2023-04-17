@@ -1,19 +1,11 @@
-/*
-    Monday Bennett's Task:
-    
-    Make a form thingy on index where new projects can be made and where new tasks can be added. You can select which
-    project to view tasks for and there's a constant view of available projects(like a navbar kinda). Tasks don't need to actually
-    show anything but their name in basic ass default html text.
-    
-*/
+
 import { format, differenceInDays } from 'date-fns';
 import './style.css';
+import { parse, stringify } from 'flatted';
 
-/*const now = new Date();
-const deadline = new Date(2023, 4, 30);
-const daysRemaining = differenceInDays(deadline, now);
-const formattedDeadline = format(deadline, 'yyyy-MM-dd');
-*/
+let projDisplay = document.querySelector('.projDisplay');
+
+
 
 class Project {
     constructor(name) {
@@ -39,7 +31,39 @@ class Project {
   }
   
   let projects = [];
+  const storedProjects = localStorage.getItem("projects");
+  console.log(storedProjects);
+  if (storedProjects) {
+    const parsedProjects = parse(storedProjects);
+    
+    for (const storedProject of parsedProjects) {
+      const newProj = new Project(storedProject.name);
+    
+      for (const storedTask of storedProject.tasks) {
+        const task = new Task(
+          storedTask.title,
+          storedTask.desc,
+          storedTask.deadline,
+          storedTask.priority,
+          newProj
+        );
+        newProj.tasks.push(task);
+      }
+  
+      projects.push(newProj); 
+      addNewProjDOM(newProj.name);
+    }
+  } else {
+    projects = [];
+  }
+  
+  
+  
+  
+  
+
   window.projects = projects;
+
   
   function addProj(name) {
     const newProj = new Project(name);
@@ -67,13 +91,21 @@ function submitNewProj(newProjName){
   projects.push(new Project(newProjName));
   toggleShowNewProjModal();
   addNewProjDOM(newProjName);
+  saveToLocalStorage();
 }
-let projDisplay = document.querySelector('.projDisplay');
+
 function addNewProjDOM(newProjName){
+  
+
   let newProj = document.createElement('div');
   newProj.classList.add('project');
   newProj.textContent = newProjName;
+
+  
   projDisplay.appendChild(newProj);
+
+  
+
   newProj.addEventListener('click', () => setActiveProj(newProjName));
 }
 
@@ -88,19 +120,12 @@ function setActiveProj(projBecomingActiveName){
   addTaskBtn.style.cursor = 'pointer';
   
   console.log(`Active project: ${activeProj.name}`);
-  for(const oldTask of Array.from(taskDisplay.querySelectorAll('.task'))){
+  for(const oldTask of Array.from(taskDisplay.querySelectorAll('.taskTrigger'))){
     console.log(oldTask);
     taskDisplay.removeChild(oldTask);
   }
   for(const newlyActiveTask of activeProj.tasks){
-    let newTask = document.createElement('div');
-    newTask.innerHTML = `<span class="taskTitle">${newlyActiveTask.title}</span><br>
-    ${newlyActiveTask.desc}<br>
-    Due: ${newlyActiveTask.deadline}<br>
-    Priority: ${newlyActiveTask.priority}`;
-    newTask.classList.add('task');
-    //makeDelEL(newTask);
-    taskDisplay.appendChild(newTask);
+    addTaskToDom(newlyActiveTask.title, newlyActiveTask.desc, newlyActiveTask.deadline, newlyActiveTask.priority, activeProj.tasks, activeProj.tasks.indexOf(newlyActiveTask));
   }
 }
 addTaskBtn.addEventListener('click', () => {
@@ -122,22 +147,54 @@ newTaskSubmitBtn.addEventListener('click', () => {
     document.querySelector('#newTaskPriority').value
   );
   newTaskModal.style.display = '';
-  //
-  let newTask = document.createElement('div');
-    //newTask.textContent = document.querySelector('#newTaskName').value;
-    newTask.innerHTML = `<span class="taskTitle">${document.querySelector('#newTaskName').value}</span><br>
-    ${document.querySelector('#newTaskDesc').value}<br>
-    Due: ${document.querySelector('#newTaskDeadline').value}<br>
-    Priority: ${document.querySelector('#newTaskPriority').value}`;
-    newTask.classList.add('task');
-    //makeDelEL(newTask);
-    taskDisplay.appendChild(newTask);
-    //
-  /*for(const task of activeProj.tasks){
-    let newTask = document.createElement('div');
-    newTask.textContent = task.title;
-    newTask.classList.add('task');
-    taskDisplay.appendChild(newTask);
-  }*/
+    addTaskToDom(document.querySelector('#newTaskName').value,
+    document.querySelector('#newTaskDesc').value,
+    document.querySelector('#newTaskDeadline').value, 
+    document.querySelector('#newTaskPriority').value, activeProj.tasks, activeProj.tasks.length - 1);
+    saveToLocalStorage();
 });
 
+function addTaskToDom(name, desc, deadline, priority, parentTaskArray, parentTaskArrayIndex){
+  let newTask = document.createElement('div');
+
+  let newTaskTrigger = document.createElement('div');
+  newTaskTrigger.classList.add('taskTrigger');
+
+  let newTaskNameP = document.createElement('p');
+  newTaskNameP.classList.add('taskTitle');
+  newTaskNameP.textContent = name;
+
+  let newTaskDescP = document.createElement('p');
+  newTaskDescP.textContent = desc;
+  newTaskDescP.classList.add('taskDesc');
+
+  let newTaskDeadlineP = document.createElement('p');
+  newTaskDeadlineP.textContent = `Due: ${deadline}`;
+  newTaskDeadlineP.classList.add('taskDeadline');
+
+  let newTaskPriorityP = document.createElement('p');
+  newTaskPriorityP.textContent = `Priority: ${priority}`;
+  newTaskPriorityP.classList.add('taskPriority');
+
+  newTask.appendChild(newTaskNameP);
+  newTask.appendChild(newTaskDescP);
+  newTask.appendChild(newTaskDeadlineP);
+  newTask.appendChild(newTaskPriorityP);
+
+  newTaskTrigger.appendChild(newTask);
+
+  newTask.classList.add('task');
+  taskDisplay.appendChild(newTaskTrigger);
+
+
+  newTask.addEventListener('click', () => {
+    parentTaskArray.splice(parentTaskArrayIndex, 1);
+    taskDisplay.removeChild(newTaskTrigger);
+    saveToLocalStorage();
+  });
+}
+
+function saveToLocalStorage(){
+  console.log('saveToLocalStorage called')
+  localStorage.setItem("projects", stringify(projects));
+}
